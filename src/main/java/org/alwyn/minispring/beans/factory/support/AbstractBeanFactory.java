@@ -12,11 +12,11 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             return bean;
         } else {
             BeanDefinition beanDefinition = getBeanDefinition(name);
-            return doCreateBean(beanDefinition);
+            return doCreateBean(name, beanDefinition);
         }
     }
 
     protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
 
-    protected abstract Object doCreateBean(BeanDefinition beanDefinition) throws BeansException;
+    protected abstract Object doCreateBean(String beanName, BeanDefinition beanDefinition) throws BeansException;
 }
