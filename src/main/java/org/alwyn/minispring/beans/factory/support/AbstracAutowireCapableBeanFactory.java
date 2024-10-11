@@ -1,8 +1,11 @@
 package org.alwyn.minispring.beans.factory.support;
 
 import org.alwyn.minispring.beans.BeansException;
+import org.alwyn.minispring.beans.PropertyValue;
+import org.alwyn.minispring.beans.PropertyValues;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
-
+import org.alwyn.minispring.beans.factory.config.BeanReference;
+import cn.hutool.core.bean.BeanUtil;
 import java.lang.reflect.Constructor;
 
 public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFactory{
@@ -34,6 +37,25 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
         return getInstantiationStrategy().instantiate(beanDefinition, beanName, constructor, args);
     }
 
+    protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition){
+        try{
+            PropertyValues propertyValues = beanDefinition.getPropertyValues();
+            for(PropertyValue propertyValue: propertyValues.getPropertyValues()){
+
+                String name = propertyValue.getName();
+                Object value = propertyValue.getValue();
+
+                if(value instanceof BeanReference){
+                    BeanReference beanReference = (BeanReference) value;
+                    value = getBean(beanReference.getBeanName());
+                }
+
+                BeanUtil.setFieldValue(bean, name, value);
+            }
+        } catch (BeansException e) {
+            throw new BeansException("Could not apply property values:" + bean);
+        }
+    }
     public InstantiationStrategy getInstantiationStrategy() {
         return instantiationStrategy;
     }
