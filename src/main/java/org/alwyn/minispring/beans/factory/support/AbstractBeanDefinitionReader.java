@@ -4,6 +4,7 @@ import org.alwyn.minispring.core.io.DefaultResourceLoader;
 import org.alwyn.minispring.core.io.ResourceLoader;
 
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader {
+
     private final BeanDefinitionRegistry registry;
 
     private ResourceLoader resourceLoader;
@@ -16,4 +17,10 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
         this.registry = registry;
         this.resourceLoader = resourceLoader;
     }
+
+    @Override
+    public BeanDefinitionRegistry getRegistry() {return registry;}
+
+    @Override
+    public ResourceLoader getResourceLoader() {return resourceLoader;}
 }
