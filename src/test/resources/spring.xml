@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-    <bean id="userDAO" class="org.alwyn.minispring.beans.factory.bean.UserDAO"/>
+    <bean id="userDAO" class="org.alwyn.minispring.bean.UserDAO"/>
 
     <bean id="userService" class="org.alwyn.minispring.bean.factory.bean.UserService"/>
         <property name="uID" value="100"/>
