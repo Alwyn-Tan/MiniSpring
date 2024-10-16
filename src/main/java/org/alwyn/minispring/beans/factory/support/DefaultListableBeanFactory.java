@@ -6,6 +6,9 @@ import org.alwyn.minispring.beans.factory.config.BeanDefinition;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+    An implement of Spring IoC Container, which is a bean factory. Can manage bean definition.\
+ */
 public class DefaultListableBeanFactory extends AbstracAutowireCapableBeanFactory implements BeanDefinitionRegistry{
 
     private final Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
