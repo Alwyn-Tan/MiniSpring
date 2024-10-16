@@ -1,4 +1,4 @@
-package org.alwyn.minispring.beans.factory.bean;
+package org.alwyn.minispring.bean;
 
 public class UserService {
 
