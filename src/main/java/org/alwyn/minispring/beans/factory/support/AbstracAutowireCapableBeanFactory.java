@@ -56,7 +56,7 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
                 BeanUtil.setFieldValue(bean, name, value);
             }
         } catch (BeansException e) {
-            throw new BeansException("Could not apply property values:" + bean);
+            throw new BeansException("Could not apply property values:" + beanName);
         }
     }
     public InstantiationStrategy getInstantiationStrategy() {

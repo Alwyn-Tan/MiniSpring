@@ -5,6 +5,7 @@ import org.alwyn.minispring.beans.factory.BeanFactory;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
 
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
+
     @Override
     public Object getBean(String name) throws BeansException {
         return doGetBean(name, null);
@@ -16,7 +17,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     }
 
     @Override
-    public <T> T getBean(String name, Class<T> type){
+    public <T> T getBean(String name, Class<T> type) throws BeansException {
         return (T) getBean(name);
     }
 

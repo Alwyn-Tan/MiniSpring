@@ -45,7 +45,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
     @Override
     public void loadBeanDefinitions(String location) throws BeanException {
-        ResourceLoader resourceLoader = new DefaultResourceLoader();
+        ResourceLoader resourceLoader = getResourceLoader();
         Resource resource = resourceLoader.getResource(location);
         loadBeanDefinitions(resource);
     }
@@ -63,27 +63,27 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
             Element beanElement = (Element) childNodes.item(i);
             String id = beanElement.getAttribute("id");
-            String className = beanElement.getAttribute("class");
             String name = beanElement.getAttribute("name");
+            String className = beanElement.getAttribute("class");
 
-            Class<?> clazz = Class.forName(name);
+            Class<?> clazz = Class.forName(className);
             String beanName = StrUtil.isNotEmpty(id) ? id : name;
             if (StrUtil.isEmpty(beanName)){
                 beanName = StrUtil.lowerFirst(clazz.getSimpleName());
             }
 
             BeanDefinition beanDefinition = new BeanDefinition(clazz);
-            for( int j=0; j< rootElement.getChildNodes().getLength(); j++){
-                if(!(rootElement.getChildNodes().item(j) instanceof Element)) continue;
-                if(!"property".equals(rootElement.getChildNodes().item(j).getNodeName())) continue;
+            for( int j=0; j< beanElement.getChildNodes().getLength(); j++){
+                if(!(beanElement.getChildNodes().item(j) instanceof Element)) continue;
+                if(!"property".equals(beanElement.getChildNodes().item(j).getNodeName())) continue;
 
-                Element property = (Element) rootElement.getChildNodes().item(j);
+                Element property = (Element) beanElement.getChildNodes().item(j);
                 String attributeName = property.getAttribute("name");
                 String attributeValue = property.getAttribute("value");
                 String attributeRef = property.getAttribute("ref");
 
                 Object value = StrUtil.isNotEmpty(attributeRef) ? new BeanReference(attributeRef) : attributeValue;
-                PropertyValue propertyValue = new PropertyValue(attributeName, attributeValue);
+                PropertyValue propertyValue = new PropertyValue(attributeName, value);
                 beanDefinition.getPropertyValues().addPropertyValue(propertyValue);
             }
             if(getRegistry().containsBeanDefinition(beanName)){
