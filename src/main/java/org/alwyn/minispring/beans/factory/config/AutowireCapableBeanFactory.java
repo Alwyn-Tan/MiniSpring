@@ -4,7 +4,7 @@ import org.alwyn.minispring.beans.BeansException;
 import org.alwyn.minispring.beans.factory.BeanFactory;
 
 public interface AutowireCapableBeanFactory extends BeanFactory {
-    Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException;
+    Object applyBeanPostProcessorsBeforeInitialization( String beanName, Object existingBean) throws BeansException;
 
-    Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException;
+    Object applyBeanPostProcessorsAfterInitialization(String beanName, Object existingBean) throws BeansException;
 }

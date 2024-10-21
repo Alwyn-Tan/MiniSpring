@@ -1,33 +1,41 @@
 package org.alwyn.minispring.beans.factory.support;
 
+import cn.hutool.core.util.StrUtil;
 import org.alwyn.minispring.beans.BeansException;
 import org.alwyn.minispring.beans.PropertyValue;
 import org.alwyn.minispring.beans.PropertyValues;
+import org.alwyn.minispring.beans.factory.DisposableBean;
+import org.alwyn.minispring.beans.factory.config.AutowireCapableBeanFactory;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
+import org.alwyn.minispring.beans.factory.config.BeanPostProcessor;
 import org.alwyn.minispring.beans.factory.config.BeanReference;
 import cn.hutool.core.bean.BeanUtil;
 import java.lang.reflect.Constructor;
 /*
     Manage the life cycle of bean, such as instantiation, property setting, and initialization.
  */
-public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFactory{
+public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
+
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
 
     @Override
     protected Object doCreateBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
-        Object bean;
+        Object beanObject;
         try {
-            bean = createBeanInstance(beanDefinition, beanName, args);
-            applyPropertyValues(beanName, bean, beanDefinition);
+            beanObject = createBeanInstance(beanName, beanDefinition, args);
+            applyPropertyValues(beanName, beanObject, beanDefinition);
+            beanObject = initializeBean(beanName, beanObject, beanDefinition);
         } catch (Exception e){
             throw new BeansException("Instantiation of bean failed", e);
         }
 
-        addSingleton(beanName, bean);
-        return bean;
+        registerDisposableBeanIfNecessary(beanName, beanObject,beanDefinition);
+
+        addSingleton(beanName, beanObject);
+        return beanObject;
     }
 
-    protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName, Object[] args){
+    protected Object createBeanInstance( String beanName, BeanDefinition beanDefinition, Object[] args){
         Constructor constructor = null;
         Class<?> beanClass = beanDefinition.getBeanClass();
         Constructor<?>[] declaredConstructors = beanClass.getDeclaredConstructors();
@@ -40,7 +48,7 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
         return getInstantiationStrategy().instantiate(beanDefinition, beanName, constructor, args);
     }
 
-    protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition){
+    protected void applyPropertyValues(String beanName, Object beanObject, BeanDefinition beanDefinition){
         try{
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
             for(PropertyValue propertyValue: propertyValues.getPropertyValues()){
@@ -53,7 +61,7 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
                     value = getBean(beanReference.getBeanName());
                 }
 
-                BeanUtil.setFieldValue(bean, name, value);
+                BeanUtil.setFieldValue(beanObject, name, value);
             }
         } catch (BeansException e) {
             throw new BeansException("Could not apply property values:" + beanName);
@@ -63,4 +71,50 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
         return instantiationStrategy;
     }
 
+    protected void registerDisposableBeanIfNecessary(String beanName, Object beanObject, BeanDefinition beanDefinition){
+        if( beanObject instanceof DisposableBean || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())){
+            registerDisposableBean(beanName, new DisposableBeanAdapter(beanObject, beanName, beanDefinition));
+        }
+    }
+
+    private Object initializeBean(String beanName, Object beanObject, BeanDefinition beanDefinition) throws BeansException {
+        Object wrappedBeanObject = applyBeanPostProcessorsBeforeInitialization(beanName, beanObject);
+        try{
+            invokeInitMethods(beanName, wrappedBeanObject, beanDefinition);
+        }catch (Exception e){
+            throw new BeansException("Initialization of bean failed", e);
+        }
+        wrappedBeanObject = applyBeanPostProcessorsAfterInitialization(beanName, wrappedBeanObject);
+        return wrappedBeanObject;
+    }
+
+    private void invokeInitMethods(String beanName, Object wrappedBeanObject, BeanDefinition beanDefinition) throws BeansException {}
+
+    @Override
+    public Object applyBeanPostProcessorsBeforeInitialization(String beanName, Object beanObject) throws BeansException {
+        Object processedBeanObject = beanObject;
+        for(BeanPostProcessor processor: getBeanPostProcessors()){
+            Object currentBeanObject = processor.postProcessBeforeInitialization(beanName, beanObject );
+            if( null == currentBeanObject){
+                return beanObject;
+            }else{
+                processedBeanObject = currentBeanObject;
+            }
+        }
+        return processedBeanObject;
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsAfterInitialization(String beanName, Object beanObject) throws BeansException {
+        Object processedBeanObject = beanObject;
+        for(BeanPostProcessor processor: getBeanPostProcessors()){
+            Object currentBeanObject = processor.postProcessAfterInitialization(beanName, beanObject );
+            if( null == currentBeanObject){
+                return beanObject;
+            }else{
+                processedBeanObject = currentBeanObject;
+            }
+        }
+        return processedBeanObject;
+    }
 }
