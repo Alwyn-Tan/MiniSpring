@@ -2,6 +2,9 @@ package org.alwyn.minispring.beans.factory.support;
 
 import org.alwyn.minispring.beans.PropertyValue;
 import org.alwyn.minispring.beans.PropertyValues;
+
+import java.beans.Transient;
+
 import org.alwyn.minispring.bean.UserDAO;
 import org.alwyn.minispring.bean.UserService;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
@@ -27,5 +30,8 @@ public class DefaultListableBeanFactoryTest {
         System.out.println(userService.queryUserName());
     }
 
+    @Test
+    public void testBeanFactoryPostProcessor() {
+    }
 
 }

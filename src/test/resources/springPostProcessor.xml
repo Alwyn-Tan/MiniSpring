@@ -8,4 +8,6 @@
         <property name="age" value="21"/>
         <property name="userDAO" ref="userDAO"/>
     <bean/>
+    
+    <bean class="org.alwyn.minispring.bean.factory.bean.n""></bean>
 </beans>
