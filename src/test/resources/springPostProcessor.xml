@@ -5,9 +5,11 @@
     <bean id="userService" class="org.alwyn.minispring.bean.factory.bean.UserService"/>
         <property name="uID" value="100"/>
         <property name="userName" value="Alwyn"/>
-        <property name="age" value="21"/>
+        <property name="location" value="China"/>
         <property name="userDAO" ref="userDAO"/>
     <bean/>
     
-    <bean class="org.alwyn.minispring.bean.factory.bean.n""></bean>
+    <bean class="org.alwyn.minispring.processor.TestBeanPostProcessor"/>
+    <bean class="org.alwyn.minispring.processor.TestBeanFactoryPostProcessor"/>
+
 </beans>

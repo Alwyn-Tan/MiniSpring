@@ -1,21 +1,36 @@
-package org.alwyn.minispring.beans.factory.support;
+package org.alwyn.minispring;
 
 import org.alwyn.minispring.beans.PropertyValue;
 import org.alwyn.minispring.beans.PropertyValues;
-
-import java.beans.Transient;
 
 import org.alwyn.minispring.bean.UserDAO;
 import org.alwyn.minispring.bean.UserService;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
 import org.alwyn.minispring.beans.factory.config.BeanReference;
+import org.alwyn.minispring.beans.factory.support.DefaultListableBeanFactory;
+import org.alwyn.minispring.beans.factory.xml.XmlBeanDefinitionReader;
+import org.alwyn.minispring.processor.TestBeanFactoryPostProcessor;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DefaultListableBeanFactoryTest {
 
+    DefaultListableBeanFactory beanFactory;
+
+    XmlBeanDefinitionReader beanDefinitionReader;
+
+    TestBeanFactoryPostProcessor testBeanFactoryPostProcessor;
+    @Before
+    public void setUp(){
+        beanFactory = new DefaultListableBeanFactory();
+
+        beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+
+        testBeanFactoryPostProcessor = new TestBeanFactoryPostProcessor();
+    }
+
     @Test
     public void test_registerBeanDefinition() {
-        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
         beanFactory.registerBeanDefinition("userDAO", new BeanDefinition(UserDAO.class));
 
@@ -32,6 +47,9 @@ public class DefaultListableBeanFactoryTest {
 
     @Test
     public void testBeanFactoryPostProcessor() {
+        beanDefinitionReader.loadBeanDefinitions("classpath:spring.xml");
+
+        testBeanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
     }
 
 }

@@ -1,7 +1,10 @@
 package org.alwyn.minispring.beans.factory.config;
 
-import javafx.beans.binding.ObjectExpression;
 import org.alwyn.minispring.beans.BeansException;
+
+/*
+    Allows for custom modification before the final instantiation of a bean
+ */
 
 public interface BeanPostProcessor {
 
