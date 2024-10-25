@@ -30,6 +30,11 @@ public class DefaultListableBeanFactory extends AbstracAutowireCapableBeanFactor
     }
 
     @Override
+    public void preInstantiateSingletons() throws BeansException {
+
+    }
+
+    @Override
     public boolean containsBeanDefinition(String beanName) {
         return beanDefinitionMap.containsKey(beanName);
     }
