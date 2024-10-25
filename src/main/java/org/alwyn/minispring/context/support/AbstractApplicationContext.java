@@ -22,21 +22,21 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
         registerBeanPostProcessors(beanFactory);
 
-        beanFactory.preInstantiateSingleton();
+        beanFactory.preInstantiateSingletons();
     }
 
     protected abstract void refreshBeanFactory() throws BeansException;
 
     protected abstract ConfigurableListableBeanFactory getBeanFactory();
 
-    private void invokeBeanFactoryPostProcessors(ConfigurableBeanFactory beanFactory) {
+    private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
         for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessorMap.values()) {
             beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
         }
     }
 
-    private void registerBeanPostProcessors(ConfigurableBeanFactory beanFactory) {
+    private void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
         for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
             beanFactory.addBeanPostProcessor(beanPostProcessor);
