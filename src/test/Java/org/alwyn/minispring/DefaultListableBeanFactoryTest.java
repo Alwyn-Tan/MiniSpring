@@ -1,10 +1,9 @@
 package org.alwyn.minispring;
 
-import org.alwyn.minispring.beans.PropertyValue;
-import org.alwyn.minispring.beans.PropertyValues;
-
 import org.alwyn.minispring.bean.UserDAO;
 import org.alwyn.minispring.bean.UserService;
+import org.alwyn.minispring.beans.PropertyValue;
+import org.alwyn.minispring.beans.PropertyValues;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
 import org.alwyn.minispring.beans.factory.config.BeanReference;
 import org.alwyn.minispring.beans.factory.support.DefaultListableBeanFactory;
@@ -20,8 +19,9 @@ public class DefaultListableBeanFactoryTest {
     XmlBeanDefinitionReader beanDefinitionReader;
 
     TestBeanFactoryPostProcessor testBeanFactoryPostProcessor;
+
     @Before
-    public void setUp(){
+    public void setUp() {
         beanFactory = new DefaultListableBeanFactory();
 
         beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
@@ -49,7 +49,14 @@ public class DefaultListableBeanFactoryTest {
     public void testBeanFactoryPostProcessor() {
         beanDefinitionReader.loadBeanDefinitions("classpath:spring.xml");
 
+        // Process Bean before initialization
         testBeanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
+
+        UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
+        //System.out.println("Initial UserName: " + userService.getUserName());
+
+        System.out.println("UserName after processing : " + userService.getUserName());
+
     }
 
 }

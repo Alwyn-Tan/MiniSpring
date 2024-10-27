@@ -13,7 +13,7 @@ public class TestBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition("userService");
         PropertyValues propertyValues = beanDefinition.getPropertyValues();
 
-        propertyValues.addPropertyValue(new PropertyValue("name", "Irene"));
+        propertyValues.addPropertyValue(new PropertyValue("userName", "Irene"));
     }
 
 }

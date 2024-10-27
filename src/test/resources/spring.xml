@@ -3,10 +3,10 @@
 
     <bean id="userDAO" class="org.alwyn.minispring.bean.UserDAO"/>
 
-    <bean id="userService" class="org.alwyn.minispring.bean.factory.bean.UserService"/>
-        <property name="uID" value="100"/>
+    <bean id="userService" class="org.alwyn.minispring.bean.UserService">
+        <property name="userID" value="001"/>
         <property name="userName" value="Alwyn"/>
-        <property name="age" value="21"/>
+        <property name="location" value="China"/>
         <property name="userDAO" ref="userDAO"/>
     </bean>
 
