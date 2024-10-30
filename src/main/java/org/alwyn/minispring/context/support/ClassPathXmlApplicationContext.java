@@ -4,7 +4,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
     private String[] configLocations;
 
     public ClassPathXmlApplicationContext(String configLocation) {
-        this(new String[]{configLocations});
+        this(new String[]{configLocation});
     }
 
     public ClassPathXmlApplicationContext(String[] configLocations) {

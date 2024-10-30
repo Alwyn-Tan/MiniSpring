@@ -11,9 +11,11 @@ import org.alwyn.minispring.beans.factory.config.BeanPostProcessor;
 import org.alwyn.minispring.beans.factory.config.BeanReference;
 import cn.hutool.core.bean.BeanUtil;
 import java.lang.reflect.Constructor;
+
 /*
-    Manage the life cycle of bean, such as instantiation, property setting, and initialization.
+    Manage the life cycle of bean, such as instantiation, post proccessing, property setting, and initialization.
  */
+
 public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
 
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();

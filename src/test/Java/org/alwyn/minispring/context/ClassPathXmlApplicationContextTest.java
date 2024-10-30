@@ -18,6 +18,6 @@ public class ClassPathXmlApplicationContextTest {
     @Test
     public void test_ClassPathXmlApplicationContext() {
         UserService userService = applicationContext.getBean("userService", UserService.class);
-        System.out.println(userService.queryUserName());
+        System.out.println(userService.getUserName());
     }
 }

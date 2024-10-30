@@ -14,6 +14,10 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
     protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory);
 
+    /*
+        Close previous BeanFactory and initialize a new BeanFactory, especially useful when
+        the configuration file has been changed.
+     */
     @Override
     protected void refreshBeanFactory() throws BeansException {
         DefaultListableBeanFactory beanFactory = createBeanFactory();
@@ -23,6 +27,6 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
     @Override
     protected ConfigurableListableBeanFactory getBeanFactory() {
-        return null;
+        return beanFactory;
     }
 }

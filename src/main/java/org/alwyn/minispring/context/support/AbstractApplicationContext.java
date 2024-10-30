@@ -12,6 +12,12 @@ import java.util.Map;
 
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
 
+    /**
+        Before the final instantiation of the ApplicationContext, refresh() must be invoked once to:
+            prepare all BeanFactoryPostProcessors and BeanPostProcessors.
+            initialize all singletons in the context.
+     */
+
     @Override
     public void refresh() throws BeansException {
         refreshBeanFactory();
@@ -29,6 +35,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     protected abstract ConfigurableListableBeanFactory getBeanFactory();
 
+    /**
+        Instantiate and invoke all registered BeanFactoryPostProcessor beans.
+     */
     private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
         for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessorMap.values()) {
