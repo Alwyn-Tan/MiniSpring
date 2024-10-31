@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
 
-    <bean id="userDAO" class="org.alwyn.minispring.bean.UserDAO"/>
+    <bean id="userDAO" class="org.alwyn.minispring.bean.UserDAO" init-method="initUserDAO"
+          destroy-method="destroyUserDAO"/>
 
     <bean id="userService" class="org.alwyn.minispring.bean.UserService">
         <property name="userID" value="001"/>

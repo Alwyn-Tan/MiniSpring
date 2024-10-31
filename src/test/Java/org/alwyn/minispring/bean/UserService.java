@@ -1,6 +1,9 @@
 package org.alwyn.minispring.bean;
 
-public class UserService {
+import org.alwyn.minispring.beans.factory.DisposableBean;
+import org.alwyn.minispring.beans.factory.InitializingBean;
+
+public class UserService implements InitializingBean, DisposableBean {
 
     private String userID;
 
@@ -9,6 +12,16 @@ public class UserService {
     private String location;
 
     private UserDAO userDAO;
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("UserService.destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("UserService.afterPropertiesSet");
+    }
 
     public String queryUserDAO() {
         return userDAO.queryUserName(userID);

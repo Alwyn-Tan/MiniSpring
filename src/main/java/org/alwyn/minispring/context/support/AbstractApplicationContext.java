@@ -4,7 +4,6 @@ import org.alwyn.minispring.beans.BeansException;
 import org.alwyn.minispring.beans.factory.ConfigurableListableBeanFactory;
 import org.alwyn.minispring.beans.factory.config.BeanFactoryPostProcessor;
 import org.alwyn.minispring.beans.factory.config.BeanPostProcessor;
-import org.alwyn.minispring.beans.factory.config.ConfigurableBeanFactory;
 import org.alwyn.minispring.context.ConfigurableApplicationContext;
 import org.alwyn.minispring.core.io.DefaultResourceLoader;
 
@@ -13,9 +12,9 @@ import java.util.Map;
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
 
     /**
-        Before the final instantiation of the ApplicationContext, refresh() must be invoked once to:
-            prepare all BeanFactoryPostProcessors and BeanPostProcessors.
-            initialize all singletons in the context.
+     * Before the final instantiation of the ApplicationContext, refresh() must be invoked once to:
+     * prepare all BeanFactoryPostProcessors and BeanPostProcessors.
+     * initialize all singletons in the context.
      */
 
     @Override
@@ -36,7 +35,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     protected abstract ConfigurableListableBeanFactory getBeanFactory();
 
     /**
-        Instantiate and invoke all registered BeanFactoryPostProcessor beans.
+     * Instantiate and invoke all registered BeanFactoryPostProcessor beans.
      */
     private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
@@ -75,6 +74,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     @Override
     public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
         return getBeanFactory().getBean(name, requiredType);
+    }
+
+    @Override
+    public void registerShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
+    }
+
+    @Override
+    public void close() {
+        getBeanFactory().destroySingletons();
     }
 
 }
