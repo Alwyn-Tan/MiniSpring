@@ -20,4 +20,25 @@ public class ClassPathXmlApplicationContextTest {
         UserService userService = applicationContext.getBean("userService", UserService.class);
         System.out.println(userService.getUserName());
     }
+
+    @Test
+    public void testRegisterShutdownHook() {
+        applicationContext.registerShutdownHook();
+
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService.getUserName());
+    }
+
+    @Test
+    public void testGetApplicationContext() {
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService.getApplicationContext());
+    }
+
+    @Test
+    public void testGetBeanFactory() {
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService.getBeanFactory());
+    }
+
 }
