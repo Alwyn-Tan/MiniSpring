@@ -1,9 +1,13 @@
 package org.alwyn.minispring.bean;
 
-import org.alwyn.minispring.beans.factory.DisposableBean;
-import org.alwyn.minispring.beans.factory.InitializingBean;
+import org.alwyn.minispring.beans.factory.BeanClassLoaderAware;
+import org.alwyn.minispring.beans.factory.BeanFactory;
+import org.alwyn.minispring.beans.factory.BeanFactoryAware;
+import org.alwyn.minispring.beans.factory.BeanNameAware;
+import org.alwyn.minispring.context.ApplicationContext;
+import org.alwyn.minispring.context.ApplicationContextAware;
 
-public class UserService implements InitializingBean, DisposableBean {
+public class UserService implements BeanNameAware, BeanClassLoaderAware, ApplicationContextAware, BeanFactoryAware {
 
     private String userID;
 
@@ -13,14 +17,18 @@ public class UserService implements InitializingBean, DisposableBean {
 
     private UserDAO userDAO;
 
+    private ApplicationContext applicationContext;
+
+    private BeanFactory beanFactory;
+
     @Override
-    public void destroy() throws Exception {
-        System.out.println("UserService.destroy");
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        System.out.println("setBeanClassLoader" + classLoader);
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("UserService.afterPropertiesSet");
+    public void setBeanName(String beanName) {
+        System.out.println("setBeanName" + beanName);
     }
 
     public String queryUserDAO() {
@@ -58,4 +66,22 @@ public class UserService implements InitializingBean, DisposableBean {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
+
+    public void setBeanFactory(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
+    }
+
+
 }
