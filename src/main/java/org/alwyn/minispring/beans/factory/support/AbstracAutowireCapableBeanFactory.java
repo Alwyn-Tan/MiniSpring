@@ -16,7 +16,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /*
-    Manage the life cycle of bean, such as instantiation, post proccessing, property setting, and initialization.
+    Manage the life cycle of bean, such as instantiation, post processing, property setting, and initialization.
  */
 
 public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
