@@ -8,7 +8,7 @@ import org.junit.Test;
 public class ClassPathXmlApplicationContextTest {
     ClassPathXmlApplicationContext applicationContext;
 
-    String configLocation = "classpath:springPostProcessor.xml";
+    String configLocation = "classpath:spring.xml";
 
     @Before
     public void setApplicationContext() {
@@ -20,4 +20,25 @@ public class ClassPathXmlApplicationContextTest {
         UserService userService = applicationContext.getBean("userService", UserService.class);
         System.out.println(userService.getUserName());
     }
+
+    @Test
+    public void test_RegisterShutdownHook() {
+        applicationContext.registerShutdownHook();
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService.getUserName());
+    }
+
+    @Test
+    public void test_GetApplicationContext() {
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService.getApplicationContext());
+    }
+
+    @Test
+    public void test_GetBeanFactory() {
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService.getBeanFactory());
+    }
+
+
 }
