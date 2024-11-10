@@ -5,8 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import org.alwyn.minispring.beans.BeansException;
 import org.alwyn.minispring.beans.PropertyValue;
 import org.alwyn.minispring.beans.PropertyValues;
-import org.alwyn.minispring.beans.factory.DisposableBean;
-import org.alwyn.minispring.beans.factory.InitializingBean;
+import org.alwyn.minispring.beans.factory.*;
 import org.alwyn.minispring.beans.factory.config.AutowireCapableBeanFactory;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
 import org.alwyn.minispring.beans.factory.config.BeanPostProcessor;
@@ -84,6 +83,19 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
     }
 
     private Object initializeBean(String beanName, Object beanObject, BeanDefinition beanDefinition) throws BeansException {
+
+        if(beanObject instanceof Aware){
+            if(beanObject instanceof BeanFactoryAware){
+                ((BeanFactoryAware) beanObject).setBeanFactory(this);
+            }
+            if(beanObject instanceof BeanClassLoaderAware){
+                ((BeanClassLoaderAware) beanObject).setBeanClassLoader(getBeanClassLoader());
+            }
+            if(beanObject instanceof BeanNameAware){
+                ((BeanNameAware) beanObject).setBeanName(beanName);
+            }
+        }
+
         Object wrappedBeanObject = applyBeanPostProcessorsBeforeInitialization(beanName, beanObject);
         try {
             invokeInitMethods(beanName, wrappedBeanObject, beanDefinition);
