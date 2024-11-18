@@ -16,7 +16,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
      * prepare all BeanFactoryPostProcessors and BeanPostProcessors.
      * initialize all singletons in the context.
      */
-
     @Override
     public void refresh() throws BeansException {
         refreshBeanFactory();
@@ -63,6 +62,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         return getBeanFactory().getBeanDefinitionNames();
     }
 
+    //---------------------------------------------------------------------
+    // Implementation of BeanFactory interface
+    //---------------------------------------------------------------------
+
     @Override
     public Object getBean(String name) throws BeansException {
         return getBeanFactory().getBean(name);
@@ -76,6 +79,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     @Override
     public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
         return getBeanFactory().getBean(name, requiredType);
+    }
+
+    //---------------------------------------------------------------------
+    // Implementation of ListableBeanFactory interface
+    //---------------------------------------------------------------------
+
+    @Override
+    public boolean containsBeanDefinition(String beanName) {
+        return getBeanFactory().containsBeanDefinition(beanName);
+    }
+
+    @Override
+    public int getBeanDefinitionCount() {
+        return getBeanFactory().getBeanDefinitionCount();
     }
 
     @Override
