@@ -31,10 +31,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         beanFactory.preInstantiateSingletons();
     }
 
-    protected abstract void refreshBeanFactory() throws BeansException;
-
-    protected abstract ConfigurableListableBeanFactory getBeanFactory();
-
     /**
      * Instantiate and invoke all registered BeanFactoryPostProcessor beans.
      */
@@ -104,5 +100,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     public void close() {
         getBeanFactory().destroySingletons();
     }
+
+    //---------------------------------------------------------------------
+    // Abstract methods that must be implemented by subclasses
+    //---------------------------------------------------------------------
+
+    protected abstract void refreshBeanFactory() throws BeansException;
+
+    protected abstract void closeBeanFactory();
+    public abstract ConfigurableListableBeanFactory getBeanFactory();
+
 
 }
