@@ -4,11 +4,13 @@ import org.alwyn.minispring.beans.BeansException;
 import org.alwyn.minispring.beans.factory.ConfigurableListableBeanFactory;
 import org.alwyn.minispring.beans.factory.config.BeanDefinition;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /*
-    An implement of Spring IoC Container, which is a bean factory. Can manage bean definition.\
+    An implement of Spring IoC Container, which is a bean factory. Can manage bean definition.
  */
 public class DefaultListableBeanFactory extends AbstracAutowireCapableBeanFactory implements BeanDefinitionRegistry, ConfigurableListableBeanFactory {
 
@@ -38,6 +40,11 @@ public class DefaultListableBeanFactory extends AbstracAutowireCapableBeanFactor
     }
 
     @Override
+    public int getBeanDefinitionCount() {
+        return beanDefinitionMap.size();
+    }
+
+    @Override
     public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
         Map<String, T> result = new HashMap<>();
         beanDefinitionMap.forEach((beanName, beanDefinition) -> {
@@ -53,4 +60,16 @@ public class DefaultListableBeanFactory extends AbstracAutowireCapableBeanFactor
     public String[] getBeanDefinitionNames() {
         return beanDefinitionMap.keySet().toArray(new String[0]);
     }
+
+    @Override
+    public String[] getBeanNamesForType(Class<?> type) {
+        List<String> beanNames = new ArrayList<>();
+        beanDefinitionMap.forEach((beanName, beanDefinition) -> {
+            if (type.isAssignableFrom(beanDefinition.getBeanClass())) {
+                beanNames.add(beanName);
+            }
+        });
+        return beanNames.toArray(new String[0]);
+    }
+
 }

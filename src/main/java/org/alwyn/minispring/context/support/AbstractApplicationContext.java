@@ -92,6 +92,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     }
 
     @Override
+    public String[] getBeanNamesForType(Class<?> type) {
+        return getBeanFactory().getBeanNamesForType(type);
+    }
+
+    @Override
     public void registerShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::close));
     }
@@ -108,7 +113,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     protected abstract void refreshBeanFactory() throws BeansException;
 
     protected abstract void closeBeanFactory();
-    public abstract ConfigurableListableBeanFactory getBeanFactory();
 
+    public abstract ConfigurableListableBeanFactory getBeanFactory();
 
 }

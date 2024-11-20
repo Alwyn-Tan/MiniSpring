@@ -23,6 +23,23 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
 
     @Override
+    public Object createBean(Class beanClass) throws BeansException {
+        BeanDefinition bd = new BeanDefinition(beanClass);
+        return doCreateBean(beanClass.getName(), bd, null);
+    }
+
+    @Override
+    public void applyBeanPropertyValues(String beanName, Object existingBean) throws BeansException {
+        BeanDefinition bd = getBeanDefinition(beanName);
+        applyPropertyValues(beanName, existingBean, bd);
+    }
+
+    @Override
+    public Object initializeBean(String beanName, Object existingBean) throws BeansException{
+        return initializeBean(beanName, existingBean, null);
+    }
+
+    @Override
     protected Object doCreateBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
         Object beanObject;
         try {
@@ -145,4 +162,5 @@ public abstract class AbstracAutowireCapableBeanFactory extends AbstractBeanFact
         }
         return processedBeanObject;
     }
+
 }

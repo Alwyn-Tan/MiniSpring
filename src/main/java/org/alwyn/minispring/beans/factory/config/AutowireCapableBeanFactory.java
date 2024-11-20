@@ -27,8 +27,6 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
     Object initializeBean(String beanName, Object existingBean) throws BeansException;
 
-    Object destroyBean(Object existingBean) throws BeansException;
-
     Object applyBeanPostProcessorsBeforeInitialization(String beanName, Object existingBean) throws BeansException;
 
     Object applyBeanPostProcessorsAfterInitialization(String beanName, Object existingBean) throws BeansException;
